@@ -66,7 +66,9 @@ function filmKur() {
   var filmEl = el('ust'), karart = el('karart'), gecis = el('gecis'), bar = el('bar'), yaz = el('yaz');
   var ipucu = el('ipucu'), iletisim = el('iletisim');
   var dik = tuval.clientWidth / tuval.clientHeight < 0.66;          // telefon dik: dik kırpılmış kareler
-  var KLASOR = dik ? '../film_d/' : '../film/';
+  // geniş tuvalde (büyük ekran) 1920 piksellik takım; küçük ekranlı bilgisayar hafif takımla yetinir
+  var genis = !dik && F.buyuk && tuval.clientWidth * Math.min(window.devicePixelRatio || 1, 2) >= 1400;
+  var KLASOR = dik ? '../film_d/' : (genis ? '../film_b/' : '../film/');
   var ILERI = ince ? 140 : 90, GERI = 30, SIL = 240, TAU = ince ? 0.09 : 0.05;
   var GIR0 = 30, GIR1 = 12, CIK0 = 20, CIK1 = 36;                   // sahne yazısı: kareye göre giriş başı/sonu, çıkış başı/sonu
   var kareler = new Array(TOPLAM);

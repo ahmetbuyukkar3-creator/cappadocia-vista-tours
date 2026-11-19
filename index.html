@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cappadocia Vista Tours</title>
-<meta name="description" content="Cappadocia Vista Tours · Göreme. Hot-air balloon, ATV, jeep safari and horseback tours in Cappadocia. Türkçe · Español · 中文">
+<meta name="description" content="Cappadocia Vista Tours · Göreme. Hot-air balloon, ATV, jeep safari and horseback tours in Cappadocia. Türkçe · English · Español · 中文">
 <meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
 <link rel="alternate" hreflang="tr" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/tr/">
+<link rel="alternate" hreflang="en" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/en/">
 <link rel="alternate" hreflang="es" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/es/">
 <link rel="alternate" hreflang="zh" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/zh/">
 <link rel="alternate" hreflang="x-default" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
@@ -39,6 +40,7 @@ footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacin
   <h1>Cappadocia Vista Tours</h1>
   <ul>
     <li><a href="tr/" lang="tr" hreflang="tr" data-dil="tr">Türkçe<small>Devam et</small></a></li>
+    <li><a href="en/" lang="en" hreflang="en" data-dil="en">English<small>Continue</small></a></li>
     <li><a href="es/" lang="es" hreflang="es" data-dil="es">Español<small>Continuar</small></a></li>
     <li><a href="zh/" lang="zh" hreflang="zh" data-dil="zh">中文<small>继续</small></a></li>
   </ul>
@@ -47,10 +49,10 @@ footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacin
 <script>
 (function(){
   var kayit = null; try { kayit = localStorage.getItem('dil'); } catch (e) {}
-  var diller = ['tr','es','zh'];
+  var diller = ["tr", "en", "es", "zh"];
   if (kayit && diller.indexOf(kayit) > -1 && location.hash !== '#sec') { location.replace(kayit + '/'); return; }
   var tarayici = (navigator.language || '').slice(0,2).toLowerCase();
-  var oneri = diller.indexOf(tarayici) > -1 ? tarayici : 'es';
+  var oneri = diller.indexOf(tarayici) > -1 ? tarayici : 'en';
   var a = document.querySelector('a[data-dil="' + oneri + '"]'); if (a) a.className = 'oneri';
   [].slice.call(document.querySelectorAll('a[data-dil]')).forEach(function(a){ a.addEventListener('click', function(){
     try { localStorage.setItem('dil', a.getAttribute('data-dil')); } catch (e) {}

@@ -102,6 +102,19 @@ html[lang=zh] .yazi h1,html[lang=zh] .yazi h2{font-size:clamp(34px,4.8vw,78px)}
   .atla{right:20px;bottom:auto;top:62px}
 }
 
+/* kayan tur şeridi: menünün altında saydam bant, film altta kaydırmayla sürer */
+.serit{position:absolute;left:0;right:0;top:82px;z-index:3;display:flex;overflow:hidden;pointer-events:none;
+  background:rgba(11,10,9,.22);border-top:1px solid rgba(244,234,216,.13);border-bottom:1px solid rgba(244,234,216,.13);
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent)}
+@media(hover:hover) and (pointer:fine){.serit{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
+.serit-ic{display:flex;flex-shrink:0;list-style:none;animation:serit 46s linear infinite;will-change:transform}
+.serit li{display:flex;align-items:center;white-space:nowrap;padding:11px 0;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:500;color:rgba(244,234,216,.88);text-shadow:0 1px 10px rgba(8,6,4,.6)}
+.serit li::after{content:"";width:4px;height:4px;margin:0 2.4em 0 2.1em;background:var(--amber);transform:rotate(45deg);opacity:.9}
+html[lang=zh] .serit li{letter-spacing:.2em;font-size:11.5px}
+@keyframes serit{to{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){.serit-ic{animation-duration:140s}}
+@media(max-width:720px){.serit{top:60px}.serit li{font-size:9.5px;padding:9px 0}.atla{top:104px}}
+
 /* sıçrama perdesi + telefonda sabit WhatsApp */
 .gecis{position:fixed;left:0;top:0;right:0;bottom:0;background:var(--bg);opacity:0;pointer-events:none;z-index:40;transition:opacity .28s}
 .gecis.acik{opacity:1}
