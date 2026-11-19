@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cappadocia Vista Tours</title>
+<meta name="description" content="Cappadocia Vista Tours · Göreme. Hot-air balloon, ATV, jeep safari and horseback tours in Cappadocia. Türkçe · Español · 中文">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
+<link rel="alternate" hreflang="tr" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/tr/">
+<link rel="alternate" hreflang="es" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/es/">
+<link rel="alternate" hreflang="zh" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/zh/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
+<meta property="og:title" content="Cappadocia Vista Tours"><meta property="og:image" content="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/img/og.jpg"><meta property="og:url" content="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="img/ikon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="font/montserrat.css">
+<style>
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:300 700;font-display:swap;src:url(font/cormorant-italik-latin.woff2) format('woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#0b0a09 url(img/kapak.webp) center/cover no-repeat;color:#f4ead8;font-family:'Montserrat','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;font-weight:400;display:flex;align-items:center;justify-content:center;text-align:center;position:relative}
+body::before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(to top,rgba(11,10,9,.94),rgba(11,10,9,.5))}
+main{position:relative;padding:24px}
+.ust{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#e0a25a;font-weight:500}
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;font-size:clamp(40px,7vw,92px);margin:16px 0 50px;line-height:1}
+ul{list-style:none;display:flex;flex-direction:column;align-items:center}
+li{margin-bottom:6px}
+a{display:block;min-width:250px;padding:15px 30px;border-bottom:1px solid rgba(244,234,216,.28);color:#f4ead8;text-decoration:none;font-size:14px;letter-spacing:.2em;text-transform:uppercase;transition:border-color .3s,color .3s}
+a:hover,a.oneri{border-color:#e0a25a}
+a:hover{color:#e0a25a}
+small{display:block;margin-top:5px;font-size:10px;letter-spacing:.2em;opacity:.55}
+@media(max-aspect-ratio:66/100){body{background-image:url(img/kapak_d.webp)}}
+footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacing:.16em;color:rgba(244,234,216,.6)}
+</style>
+</head>
+<body>
+<main>
+  <span class="ust">Göreme · Cappadocia</span>
+  <h1>Cappadocia Vista Tours</h1>
+  <ul>
+    <li><a href="tr/" lang="tr" hreflang="tr" data-dil="tr">Türkçe<small>Devam et</small></a></li>
+    <li><a href="es/" lang="es" hreflang="es" data-dil="es">Español<small>Continuar</small></a></li>
+    <li><a href="zh/" lang="zh" hreflang="zh" data-dil="zh">中文<small>继续</small></a></li>
+  </ul>
+</main>
+<footer>TÜRSAB 17102</footer>
+<script>
+(function(){
+  var kayit = null; try { kayit = localStorage.getItem('dil'); } catch (e) {}
+  var diller = ['tr','es','zh'];
+  if (kayit && diller.indexOf(kayit) > -1 && location.hash !== '#sec') { location.replace(kayit + '/'); return; }
+  var tarayici = (navigator.language || '').slice(0,2).toLowerCase();
+  var oneri = diller.indexOf(tarayici) > -1 ? tarayici : 'es';
+  var a = document.querySelector('a[data-dil="' + oneri + '"]'); if (a) a.className = 'oneri';
+  [].slice.call(document.querySelectorAll('a[data-dil]')).forEach(function(a){ a.addEventListener('click', function(){
+    try { localStorage.setItem('dil', a.getAttribute('data-dil')); } catch (e) {}
+    (window.dataLayer = window.dataLayer || []).push({ event: 'dil_secimi', dil: a.getAttribute('data-dil') });
+  }); });
+})();
+</script>
+</body>
+</html>
