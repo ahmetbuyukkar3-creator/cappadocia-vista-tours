@@ -31,6 +31,7 @@ a:hover,a.oneri{border-color:#e0a25a}
 a:hover{color:#e0a25a}
 small{display:block;margin-top:5px;font-size:10px;letter-spacing:.2em;opacity:.55}
 @media(max-aspect-ratio:66/100){body{background-image:url(img/kapak_d.webp)}}
+@media(max-height:640px){h1{margin-bottom:26px}a{padding:10px 30px}}
 footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacing:.16em;color:rgba(244,234,216,.6)}
 </style>
 </head>
@@ -50,7 +51,12 @@ footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacin
 (function(){
   var kayit = null; try { kayit = localStorage.getItem('dil'); } catch (e) {}
   var diller = ["tr", "en", "es", "zh"];
-  if (kayit && diller.indexOf(kayit) > -1 && location.hash !== '#sec') { location.replace(kayit + '/'); return; }
+  if (kayit && diller.indexOf(kayit) > -1 && location.hash !== '#sec') {
+    // adresteki işaretler (?k=instagram, utm_...) dil sayfasına taşınır; VISTA varsa geldiği site de (?k=) eklenir
+    var ek = location.search, r = document.referrer, a;
+    if (!ek && false && r) { a = document.createElement('a'); a.href = r; if (a.host !== location.host) ek = '?k=' + encodeURIComponent(a.hostname); }
+    location.replace(kayit + '/' + ek); return;
+  }
   var tarayici = (navigator.language || '').slice(0,2).toLowerCase();
   var oneri = diller.indexOf(tarayici) > -1 ? tarayici : 'en';
   var a = document.querySelector('a[data-dil="' + oneri + '"]'); if (a) a.className = 'oneri';
@@ -60,5 +66,6 @@ footer{position:absolute;bottom:22px;left:0;right:0;font-size:11px;letter-spacin
   }); });
 })();
 </script>
+
 </body>
 </html>

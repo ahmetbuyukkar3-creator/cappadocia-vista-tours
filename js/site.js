@@ -236,7 +236,21 @@ function filmKur() {
   });
   window.addEventListener('load', function () { if (acildi) boyutla(); });
 }
-dene('film', function () { try { filmKur(); } catch (e) { duz(e); } });
+// Tur sayfalarında film yok: üst çubuk kapak görselinin üstünde saydam başlar, kaydırınca dolar; telefonda WhatsApp düğmesi belirir.
+function altSayfaKur() {
+  var bar = el('bar'), yaz = el('yaz'), dolu = null;
+  dongu.push(function (y) {
+    var a = y > 80;
+    if (a === dolu) return;
+    dolu = a;
+    if (bar) bar.className = a ? 'bar dolu' : 'bar';
+    if (yaz) yaz.className = a ? 'yaz wa acik' : 'yaz wa';
+  });
+}
+dene('film', function () {
+  if (!el('tuval')) { altSayfaKur(); return; }       // film yalnız ana sayfada
+  try { filmKur(); } catch (e) { duz(e); }
+});
 
 /* ---------- sayfa içi bağlantılar ---------- */
 dene('baglanti', function () {
@@ -316,8 +330,8 @@ dene('hareket', function () {
 /* ---------- galeri: süzgeç + büyütme ---------- */
 dene('galeri', function () {
   var izgara = el('izgara'), suz = el('suz'), kutu = el('buyut');
-  if (!izgara || !suz || !kutu) return;
-  var kareler = hepsi('.kare', izgara), dugmeler = hepsi('button', suz), secili = 'hepsi', gorunen = kareler.slice();
+  if (!izgara || !kutu) return;                       // süzgeç yalnız ana sayfada; tur sayfasında o turun kareleri var
+  var kareler = hepsi('.kare', izgara), dugmeler = suz ? hepsi('button', suz) : [], secili = 'hepsi', gorunen = kareler.slice();
   var resim = el('bResim'), bKat = el('bKat'), bSayi = el('bSayi'), acik = -1, sonOdak = null, x0 = null;
 
   // Kareler sütunlara sırayla, her seferinde en kısa sütuna dizilir: listedeki ilk kareler en üstte kalır.
@@ -421,6 +435,10 @@ dene('form', function () {
   function iki(n) { return ('0' + n).slice(-2); }
   function koy(sablon, v) { return sablon.replace('{v}', v); }
   try { alan.tarih.min = bugun.getFullYear() + '-' + iki(bugun.getMonth() + 1) + '-' + iki(bugun.getDate()); } catch (e) {}
+  try {                                               // tur sayfasındaki "Talep formu" buraya ?tur=balon ile gelir: o tur işaretli açılır
+    var gelen = /[?&]tur=([a-z]{2,10})/.exec(location.search), kutu = gelen && form.querySelector('input[data-tur="' + gelen[1] + '"]');
+    if (kutu) kutu.checked = true;
+  } catch (e) {}
   form.addEventListener('submit', function (o) {
     o.preventDefault();
     var ad = alan.ad.value.replace(/\s+/g, ' ').replace(/^ | $/g, '');
@@ -435,10 +453,13 @@ dene('form', function () {
     satir.push(V.etiket);
     url = 'https://wa.me/' + V.wa_no + '?text=' + encodeURIComponent(satir.join('\n'));
     dataLayer.push({ event: 'form_gonder', dil: DIL, turlar: kodlar, kisi: kisi || null, tarih_var: !!tarih });
-    if (V.form_uc && window.fetch) {                  // VISTA kurulunca talep panele de düşer
-      try {
-        fetch(V.form_uc, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
-          body: JSON.stringify({ ad: ad, tarih: tarih, kisi: kisi, turlar: kodlar, mesaj: not, dil: DIL, sayfa: location.pathname }) })
+    // VISTA bağlıysa talep panele de düşer (adres: sitedeki VISTA kodundan; yoksa metinler.py FORM_UC)
+    var uc = (window.vista && window.vista.uc) ? window.vista.uc + '/api/vista/talep' : V.form_uc;
+    if (uc && window.fetch) {
+      try {                                            // başlık eklenmez: tarayıcı ön sorgu yapmadan doğrudan gönderir
+        fetch(uc, { method: 'POST', keepalive: true, credentials: 'omit',
+          body: JSON.stringify({ ad: ad, tarih: tarih, kisi: kisi, turlar: kodlar, mesaj: not, dil: DIL,
+            z: window.vista ? window.vista.id : '' }) })
           .then(function () {}, function () {});
       } catch (e) {}
     }
