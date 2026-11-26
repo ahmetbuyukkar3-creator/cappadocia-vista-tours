@@ -253,17 +253,17 @@ dene('film', function () {
 });
 
 /* ---------- sayfa içi bağlantılar ---------- */
+// Formda yalnız beş ana turun kutusu var; diğer 22 hizmet sorulunca kendi kutusu eklenir (WhatsApp mesajına ve panele adıyla gider)
+function kutuEkle(tur, ad) {
+  var alan = document.querySelector('#form .secenek'), l, k, i, s;
+  if (!alan || !ad) return null;
+  l = document.createElement('label'); l.className = 'tik';
+  k = document.createElement('input'); k.type = 'checkbox'; k.name = 'tur'; k.value = ad; k.setAttribute('data-tur', tur);
+  i = document.createElement('i'); s = document.createElement('span'); s.textContent = ad;
+  l.appendChild(k); l.appendChild(i); l.appendChild(s); alan.appendChild(l);
+  return k;
+}
 dene('baglanti', function () {
-  // Formda yalnız beş ana turun kutusu var; diğer 22 hizmetin "Bu turu sor"u kendi kutusunu ekler (WhatsApp mesajına ve panele adıyla gider)
-  function kutuEkle(tur, ad) {
-    var alan = document.querySelector('#form .secenek'), l, k, i, s;
-    if (!alan || !ad) return null;
-    l = document.createElement('label'); l.className = 'tik';
-    k = document.createElement('input'); k.type = 'checkbox'; k.name = 'tur'; k.value = ad; k.setAttribute('data-tur', tur);
-    i = document.createElement('i'); s = document.createElement('span'); s.textContent = ad;
-    l.appendChild(k); l.appendChild(i); l.appendChild(s); alan.appendChild(l);
-    return k;
-  }
   hepsi('a[href^="#"]').forEach(function (a) { a.addEventListener('click', function (o) {
     var id = a.getAttribute('href').slice(1), hedef = el(id), tur = a.getAttribute('data-tur'), kutu, form;
     if (!hedef) return;
@@ -573,6 +573,13 @@ dene('galeri', function () {
     o.preventDefault(); sonOdak = k; ac(gorunen.indexOf(k));
     dataLayer.push({ event: 'galeri_ac', dil: DIL, kategori: k.getAttribute('data-kat') });
   }); });
+  // tur sayfasının başındaki fotoğraf düzeni: küçük kareler ve "Tüm fotoğraflar" aynı büyütme penceresini açar
+  hepsi('[data-kare]').forEach(function (a) { a.addEventListener('click', function (o) {
+    var k = kareler[+a.getAttribute('data-kare')];
+    if (!k) return;
+    o.preventDefault(); sonOdak = a; ac(gorunen.indexOf(k));
+    dataLayer.push({ event: 'galeri_ac', dil: DIL, kategori: k.getAttribute('data-kat') });
+  }); });
   el('bKapat').addEventListener('click', kapat);
   el('bGeri').addEventListener('click', function () { goster(acik - 1); });
   el('bIleri').addEventListener('click', function () { goster(acik + 1); });
@@ -603,7 +610,8 @@ dene('form', function () {
   function koy(sablon, v) { return sablon.replace('{v}', v); }
   try { alan.tarih.min = bugun.getFullYear() + '-' + iki(bugun.getMonth() + 1) + '-' + iki(bugun.getDate()); } catch (e) {}
   try {                                               // tur sayfasındaki "Talep formu" buraya ?tur=balon ile gelir: o tur işaretli açılır
-    var gelen = /[?&]tur=([a-z]{2,10})/.exec(location.search), kutu = gelen && form.querySelector('input[data-tur="' + gelen[1] + '"]');
+    var gelen = /[?&]tur=([a-z0-9]{2,12})/.exec(location.search), kutu = gelen && form.querySelector('input[data-tur="' + gelen[1] + '"]'), h;
+    if (gelen && !kutu && (h = document.querySelector('#tur-' + gelen[1] + ' h3'))) kutu = kutuEkle(gelen[1], h.textContent);
     if (kutu) kutu.checked = true;
   } catch (e) {}
   form.addEventListener('submit', function (o) {
