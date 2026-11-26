@@ -254,6 +254,16 @@ dene('film', function () {
 
 /* ---------- sayfa içi bağlantılar ---------- */
 dene('baglanti', function () {
+  // Formda yalnız beş ana turun kutusu var; diğer 22 hizmetin "Bu turu sor"u kendi kutusunu ekler (WhatsApp mesajına ve panele adıyla gider)
+  function kutuEkle(tur, ad) {
+    var alan = document.querySelector('#form .secenek'), l, k, i, s;
+    if (!alan || !ad) return null;
+    l = document.createElement('label'); l.className = 'tik';
+    k = document.createElement('input'); k.type = 'checkbox'; k.name = 'tur'; k.value = ad; k.setAttribute('data-tur', tur);
+    i = document.createElement('i'); s = document.createElement('span'); s.textContent = ad;
+    l.appendChild(k); l.appendChild(i); l.appendChild(s); alan.appendChild(l);
+    return k;
+  }
   hepsi('a[href^="#"]').forEach(function (a) { a.addEventListener('click', function (o) {
     var id = a.getAttribute('href').slice(1), hedef = el(id), tur = a.getAttribute('data-tur'), kutu, form;
     if (!hedef) return;
@@ -261,6 +271,7 @@ dene('baglanti', function () {
     if (menuKapa) menuKapa();
     if (tur) {                                       // "Bu turu sor": formda o tur işaretlenir
       kutu = document.querySelector('#form input[data-tur="' + tur + '"]');
+      if (!kutu) kutu = kutuEkle(tur, a.getAttribute('data-ad'));    // formda kutusu olmayan hizmet: kutusu eklenir
       if (kutu) kutu.checked = true;
       dataLayer.push({ event: 'tur_sor', dil: DIL, tur: tur });
       form = el('form');
@@ -325,6 +336,162 @@ dene('hareket', function () {
       e.style.transform = 'translate3d(0,' + (a * +e.getAttribute('data-par')).toFixed(2) + '%,0)';
     }
   });
+});
+
+/* ---------- turlar: yana kaydırılan kartlar (26 Kas 2026, Hüseyin Bey'in isteği) ----------
+   Kaydırma tarayıcının kendisi (parmak, trackpad, ok tuşları); fareyle sürükleme yalnız fareli cihazda.
+   Görünen kartın düğmesi yanar, görünmeyen kart söner; fotoğraf kaydıkça hafifçe ters yöne kayar;
+   arkadaki ortam ışığı görünen turun rengini alır. Fareli cihazda kart imlece doğru 3B eğilir, ışık imleci izler. */
+dene('turlar', function () {
+  var liste = el('tur-liste');
+  if (!liste) return;
+  var sahne = liste.parentNode, kartlar = hepsi('.kart', liste), secler = hepsi('#tur-sec [data-git]'), geri = el('tur-geri'),
+      ileri = el('tur-ileri'), cubuk = el('tur-cubuk'), say = el('tur-say'), ortam = hepsi('#tur-ortam i'),
+      az = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches),
+      bekle = false, oynandi = false, acildi = false, ustte = -1, sonOrtam = -1, n = kartlar.length;
+  if (!n) return;
+  function iki(x) { return (x < 9 ? '0' : '') + (x + 1); }
+  function adim() { return n > 1 ? kartlar[1].offsetLeft - kartlar[0].offsetLeft : liste.clientWidth; }
+  function kay(x) {
+    x = sinirla(x, 0, liste.scrollWidth - liste.clientWidth);
+    if (liste.scrollTo && !az) { try { liste.scrollTo({ left: x, behavior: 'smooth' }); return; } catch (e) {} }
+    liste.scrollLeft = x;
+  }
+  // telefonda kategori düğmeleri ekrana sığmaz: görünen kartın kategorisi değişince o düğme görünür yere kayar
+  var secKutu = el('tur-sec'), sonGrup = -1;
+  function seciliGoster(i) {
+    var g = +kartlar[i].getAttribute('data-g'), b = secler[g], x;
+    if (g === sonGrup) return;
+    sonGrup = g;
+    if (!b || !secKutu || secKutu.scrollWidth <= secKutu.clientWidth + 2) return;
+    x = sinirla(b.offsetLeft - 16, 0, secKutu.scrollWidth - secKutu.clientWidth);
+    if (secKutu.scrollTo && !az) { try { secKutu.scrollTo({ left: x, behavior: 'smooth' }); return; } catch (e) {} }
+    secKutu.scrollLeft = x;
+  }
+  function ortamYak(i) {
+    if (i === sonOrtam || !ortam[i]) return;
+    sonOrtam = i;
+    ortam.forEach(function (o, j) { o.classList.toggle('acik', j === i); });
+  }
+  function guncelle() {
+    bekle = false;
+    var sl = liste.scrollLeft, w = liste.clientWidth, sw = liste.scrollWidth, i, k, sol, en, gor, d, ilk = -1, son = -1, gruplar = {};
+    for (i = 0; i < n; i++) {
+      k = kartlar[i]; sol = k.offsetLeft - sl; en = k.offsetWidth;
+      gor = (Math.min(sol + en, w) - Math.max(sol, 0)) / en > 0.6;           // kartın en az %60'ı görünüyor
+      k.classList.toggle('gorunur', gor);
+      if (gor) { if (ilk < 0) ilk = i; son = i; }
+      if (gor) gruplar[k.getAttribute('data-g')] = 1;
+      if (!az) {
+        d = sinirla((sol + en / 2 - w / 2) / w, -1, 1);
+        k.style.setProperty('--px', (d * -26).toFixed(1) + 'px');
+      }
+    }
+    if (ilk < 0) ilk = son = 0;
+    secler.forEach(function (b) {                                            // görünen kartın kategorisi yanar
+      var acik = !!gruplar[b.getAttribute('data-g')];
+      b.classList.toggle('secili', acik); b.setAttribute('aria-pressed', acik ? 'true' : 'false');
+    });
+    seciliGoster(ilk);
+    if (say) say.innerHTML = iki(ilk) + (son > ilk ? ' – ' + iki(son) : '') + ' <small>/ ' + iki(n - 1) + '</small>';
+    ortamYak(ustte >= 0 ? ustte : ilk);
+    if (geri) geri.disabled = sl < 4;
+    if (ileri) ileri.disabled = sl > sw - w - 4;
+    if (cubuk && sw > 0) { cubuk.style.width = (w / sw * 100).toFixed(2) + '%'; cubuk.style.left = (sl / sw * 100).toFixed(2) + '%'; }
+  }
+  function iste() { if (!bekle) { bekle = true; cerceve(guncelle); } }
+  liste.addEventListener('scroll', function () {
+    iste();
+    if (!oynandi && liste.scrollLeft > 12) { oynandi = true; sahne.classList.add('oynandi'); dataLayer.push({ event: 'tur_kaydir', dil: DIL }); }
+  });
+  window.addEventListener('resize', iste);
+  // kategori satırı sığmıyorsa devamı olan kenar solar (sol: geride düğme var, sağ: ileride düğme var)
+  function cipTasar() {
+    if (!secKutu) return;
+    var x = secKutu.scrollLeft, fazla = secKutu.scrollWidth - secKutu.clientWidth;
+    secKutu.classList.toggle('sol', fazla > 2 && x > 4);
+    secKutu.classList.toggle('sag', fazla > 2 && x < fazla - 4);
+  }
+  if (secKutu) secKutu.addEventListener('scroll', cipTasar);
+  cipTasar(); window.addEventListener('resize', cipTasar);
+  if (geri) geri.addEventListener('click', function () { kay(liste.scrollLeft - adim()); });
+  if (ileri) ileri.addEventListener('click', function () { kay(liste.scrollLeft + adim()); });
+  secler.forEach(function (b) { b.addEventListener('click', function () {
+    var i = +b.getAttribute('data-git');
+    if (kartlar[i]) kay(kartlar[i].offsetLeft - kartlar[0].offsetLeft);
+  }); });
+
+  // fareli cihaz: kart imlece doğru en çok 7° eğilir; ışık, kenar parlaması ve fotoğraftaki yansıma imleci izler
+  if (ince && !az) kartlar.forEach(function (k, i) {
+    var ic = k.querySelector('.kart-ic'), foto = k.querySelector('.kart-foto'), hedef = null, cizim = false;
+    function ciz() {
+      cizim = false;
+      if (!hedef) return;
+      var r = ic.getBoundingClientRect(), x = (hedef.x - r.left) / r.width, y = (hedef.y - r.top) / r.height, f = foto.getBoundingClientRect();
+      ic.style.setProperty('--ry', ((x - 0.5) * 14).toFixed(2) + 'deg');
+      ic.style.setProperty('--rx', ((0.5 - y) * 10).toFixed(2) + 'deg');
+      ic.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+      ic.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      foto.style.setProperty('--gx', ((hedef.x - f.left) / f.width * 100).toFixed(1) + '%');
+      foto.style.setProperty('--gy', ((hedef.y - f.top) / f.height * 100).toFixed(1) + '%');
+    }
+    var tarama = 0;
+    k.addEventListener('mouseenter', function () {
+      k.classList.add('egik'); ustte = i; iste();
+      if (liste.classList.contains('yerlesti')) {                              // tarama ışığı her girişte baştan
+        k.classList.remove('tara'); void k.offsetWidth; k.classList.add('tara');
+        clearTimeout(tarama); tarama = setTimeout(function () { k.classList.remove('tara'); }, 1450);
+      }
+    });
+    k.addEventListener('mousemove', function (o) { hedef = { x: o.clientX, y: o.clientY }; if (!cizim) { cizim = true; cerceve(ciz); } });
+    k.addEventListener('mouseleave', function () {
+      hedef = null; k.classList.remove('egik'); ustte = -1; iste();
+      ic.style.setProperty('--rx', '0deg'); ic.style.setProperty('--ry', '0deg');
+    });
+  });
+
+  // fareyle tutup sürükleme; bırakınca en yakın karta oturur, sürüklerken tıklama sayılmaz
+  if (ince && window.PointerEvent) (function () {
+    var x0 = 0, s0 = 0, basili = false, oynak = false;
+    liste.addEventListener('pointerdown', function (o) {
+      if (o.pointerType !== 'mouse' || o.button !== 0) return;
+      x0 = o.clientX; s0 = liste.scrollLeft; basili = true; oynak = false;
+    });
+    window.addEventListener('pointermove', function (o) {
+      if (!basili) return;
+      var dx = o.clientX - x0;
+      if (!oynak && Math.abs(dx) > 6) { oynak = true; liste.classList.add('suruk'); }
+      if (oynak) liste.scrollLeft = s0 - dx;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!basili) return;
+      basili = false;
+      if (!oynak) return;
+      var a = adim();
+      liste.classList.remove('suruk');
+      kay(Math.round(liste.scrollLeft / a) * a);
+      setTimeout(function () { oynak = false; }, 0);
+    });
+    liste.addEventListener('click', function (o) { if (oynak) { o.preventDefault(); o.stopPropagation(); } }, true);
+    liste.addEventListener('dragstart', durdur);
+  })();
+
+  // giriş: şerit görününce kartlar sağdan sırayla gelir, fotoğraflar perde gibi açılır
+  function ac() {
+    if (acildi) return;
+    acildi = true;
+    liste.classList.add('acik');
+    setTimeout(function () { liste.classList.add('yerlesti'); guncelle(); }, az ? 0 : 2800 + n * 100);   // tarama ışığı bitene kadar
+    guncelle();
+  }
+  if (az || !('IntersectionObserver' in window)) ac();
+  else {
+    var g = new IntersectionObserver(function (kayitlar) {
+      if (kayitlar[0].isIntersecting) { ac(); g.disconnect(); }
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
+    g.observe(liste);
+  }
+  guncelle();
 });
 
 /* ---------- galeri: süzgeç + büyütme ---------- */
