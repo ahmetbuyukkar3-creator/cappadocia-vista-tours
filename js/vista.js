@@ -27,7 +27,7 @@ try {
   var V = {};
   try { V = JSON.parse(document.getElementById('veri').textContent); } catch (e) {}
   var F = V.film || null, TOP = F ? (F.kare - 1 + (V.kuyruk || 0)) : 0;
-  var filmEl = document.getElementById('ust');
+  var filmEl = document.getElementById('ust'), gVideo = document.getElementById('gVideo');
   // sitenin durakları, yukarıdan aşağı (sunucudaki DURAK listesiyle aynı sıra)
   var SAHNE_DURAK = [0, 1, 2, 3, 3, 4];                    // film sahnesi → durak (4. sahne kapı geçişi: at turuna sayılır)
   var BOLUM = ['turlar', 'galeri', 'biz', 'otel', 'iletisim'];   // durak 5..9
@@ -45,6 +45,10 @@ try {
       yuzde = Math.round(kare / (F.kare - 1) * 100);
       if (yuzde > enFilm) enFilm = yuzde;
       for (k = 0; k < F.sahne.length; k++) if (kare >= F.sahne[k] - 20) durak = SAHNE_DURAK[k] || 0;
+    } else if (V.giris && gVideo && gVideo.duration) {      // v4 (27 Kas 2026): kaydırma filmi yok, giriş videosu var; sahneler aynı beş durak
+      yuzde = Math.round(gVideo.currentTime / gVideo.duration * 100);
+      if (yuzde > enFilm) enFilm = yuzde;
+      for (k = 0; k < V.giris.length && k < 5; k++) if (gVideo.currentTime >= V.giris[k]) durak = k;
     }
     for (k = 0; k < BOLUM.length; k++) {
       e = document.getElementById(BOLUM[k]);
