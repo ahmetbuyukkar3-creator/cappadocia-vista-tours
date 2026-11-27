@@ -1,0 +1,94 @@
+{
+ "kaynak": "https://travel-cappadocia.com/llms-full.txt",
+ "kaynak_para": "EUR",
+ "para": "EUR",
+ "guncel": 0,
+ "h": {
+  "balon": {
+   "k": "t26",
+   "den": 1,
+   "b": "kisi"
+  },
+  "soganli": {
+   "k": "t1220",
+   "b": "kisi"
+  },
+  "balonizle": {
+   "k": "t30",
+   "b": "kisi"
+  },
+  "kirmizi": {
+   "k": "t44",
+   "b": "kisi"
+  },
+  "yesil": {
+   "k": "t6283",
+   "b": "kisi"
+  },
+  "mavi": {
+   "k": "t31",
+   "b": "kisi"
+  },
+  "karma": {
+   "k": "t42",
+   "b": "kisi"
+  },
+  "safari": {
+   "k": "t40",
+   "b": "kisi"
+  },
+  "atv": {
+   "k": "t45",
+   "b": "kisi"
+  },
+  "at": {
+   "k": "t46",
+   "b": "kisi"
+  },
+  "deve": {
+   "k": "t32",
+   "b": "kisi"
+  },
+  "klasik": {
+   "k": "t36",
+   "b": "kisi"
+  },
+  "gece": {
+   "k": "t47",
+   "b": "kisi"
+  },
+  "sema": {
+   "k": "t48",
+   "b": "kisi"
+  },
+  "comlek": {
+   "k": "t34",
+   "b": "kisi"
+  },
+  "fotograf": {
+   "k": "t33",
+   "b": "kisi"
+  },
+  "hamam": {
+   "k": "t39",
+   "b": "kisi"
+  },
+  "paket2": {
+   "k": "t2372",
+   "b": "kisi"
+  },
+  "paket3": {
+   "k": "t5061",
+   "b": "kisi"
+  },
+  "havalimani": {
+   "k": "t51",
+   "den": 1,
+   "b": "kisi"
+  },
+  "istanbul": {
+   "k": "t49",
+   "b": "arac"
+  }
+ }
+}
