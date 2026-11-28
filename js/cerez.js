@@ -57,7 +57,7 @@
   var STIL = '#cerez{position:fixed;left:18px;bottom:18px;z-index:90;width:calc(100% - 36px);max-width:400px;padding:18px 20px;background:#fff;color:#1d1a17;' +
     'border:1px solid #e6ddd0;border-radius:18px;box-shadow:0 22px 44px -26px rgba(29,26,23,.55);' +
     "font-family:'Montserrat','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;font-size:14px;line-height:1.55;font-weight:400}" +
-    '#cerez p{margin:0 0 14px}#cerez div{display:flex;gap:8px}' +
+    '#cerez p{margin:0 0 14px}#cerez div{display:flex;gap:8px}#cerez a{color:inherit;text-decoration:underline;text-underline-offset:3px}' +
     '#cerez button{flex:1;min-height:42px;padding:8px 14px;border-radius:999px;border:1.5px solid #1d1a17;background:#fff;color:#1d1a17;' +
     'font-family:inherit;font-size:14px;font-weight:700;line-height:1.2;cursor:pointer;transition:background .2s,color .2s}' +
     '#cerez button:hover{background:#f3ece1}#cerez button[data-k=evet]{background:#1d1a17;color:#fff}#cerez button[data-k=evet]:hover{background:#3a342e}' +
@@ -73,6 +73,10 @@
     var k = document.createElement('div'); k.id = 'cerez'; k.setAttribute('role', 'region'); k.setAttribute('aria-label', m.ad);
     if (document.getElementById('yaz')) k.className = 'yz';      // dar ekranda sabit WhatsApp düğmesinin üstünde dursun
     var p = document.createElement('p'); p.textContent = m.metin; k.appendChild(p);
+    if (m.bag) {                                                 // gizlilik sayfası (sayfa_uret.py cerez_kod)
+      var g = document.createElement('a'); g.href = m.bag; g.textContent = m.bag_ad;
+      p.appendChild(document.createTextNode(' ')); p.appendChild(g);
+    }
     var d = document.createElement('div');
     [['hayir', m.hayir], ['evet', m.evet]].forEach(function (x) {
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-k', x[0]); b.textContent = x[1];

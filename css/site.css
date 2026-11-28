@@ -280,8 +280,9 @@ h1,h2,h3{font-weight:700;line-height:1.08;letter-spacing:-.02em}
 .alt-sutun li{margin-bottom:6px}
 .alt-sutun a{font-size:14px;color:var(--soluk);transition:color .2s}
 .alt-sutun a:hover{color:var(--vurgu)}
-.alt-son [data-cerez]{text-decoration:underline;text-underline-offset:3px}
-.alt-son [data-cerez]:hover{color:var(--vurgu)}
+.alt-yasal{display:inline-flex;flex-wrap:wrap;gap:6px 18px}
+.alt-yasal a{text-decoration:underline;text-underline-offset:3px}
+.alt-yasal a:hover{color:var(--vurgu)}
 .alt-son{max-width:var(--genis);margin:0 auto;padding:18px var(--kenar) 96px;border-top:1px solid var(--cizgi);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--soluk)}
 
 /* ---------- sabit WhatsApp düğmesi ---------- */
@@ -356,6 +357,13 @@ h1,h2,h3{font-weight:700;line-height:1.08;letter-spacing:-.02em}
 .tp-uzun h2+h3{margin-top:0}
 .tp-uzun p{font-size:15.5px;line-height:1.75;color:#4b443d;max-width:68ch}
 .tp-uzun-wa{margin-top:22px}
+/* gizlilik sayfası (uret/gizlilik_sablon.html) */
+.tp-gz{max-width:880px;margin-top:18px}
+.tp-gz h2{margin:28px 0 8px}
+.tp-gz h2:first-child{margin-top:0}
+.tp-gz a{text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.tp-gz a:hover{color:var(--vurgu)}
+.tp-gz .gz-tarih{margin-top:26px;font-size:13px;color:var(--soluk)}
 .tp-sag{position:sticky;top:calc(var(--ust-boy) + 16px);display:grid;gap:16px}
 .tp-rez{box-shadow:var(--golge)}
 .tp-rez h2{font-size:20px;line-height:1.2;margin-bottom:14px}
