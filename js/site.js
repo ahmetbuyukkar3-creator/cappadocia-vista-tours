@@ -105,16 +105,18 @@ dene('giris', function () {
     });
     sekmeler.forEach(function (s, j) { s.classList.toggle('secili', j === i); });
   }
-  function sahne(t) { var i = 0, k; for (k = 0; k < anlar.length; k++) if (t >= anlar[k] - 0.05) i = k; return i; }
+  var kuyruk = V.giris_kuyruk || 0;                         // videonun sonundaki balonlar: ilk sahnenin devamı (başa dönüş göze batmasın)
+  function sonda(t) { return kuyruk && t >= kuyruk - 0.05; }
+  function sahne(t) { var i = 0, k; if (sonda(t)) return 0; for (k = 0; k < anlar.length; k++) if (t >= anlar[k] - 0.05) i = k; return i; }
   function cizgi(i, oran) {
     cizgiler.forEach(function (c, j) { if (c) c.style.width = (j < i ? 100 : j > i ? 0 : Math.round(oran * 1000) / 10) + '%'; });
   }
   function ciz() {
     cizim = false;
     if (bozuk) return;
-    var t = v.currentTime || 0, i = sahne(t), bas = anlar[i], son = anlar[i + 1] || v.duration || bas + 7;
+    var t = v.currentTime || 0, i = sahne(t), bas = anlar[i], son = anlar[i + 1] || kuyruk || v.duration || bas + 7;
     goster(i);
-    cizgi(i, Math.max(0, Math.min(1, (t - bas) / Math.max(0.1, son - bas))));
+    cizgi(i, sonda(t) ? 0 : Math.max(0, Math.min(1, (t - bas) / Math.max(0.1, son - bas))));
     if (!v.paused) iste();
   }
   function iste() { if (!cizim) { cizim = true; (window.requestAnimationFrame || setTimeout)(ciz); } }

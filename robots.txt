@@ -1,2 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /uret/
+Sitemap: https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/sitemap.xml

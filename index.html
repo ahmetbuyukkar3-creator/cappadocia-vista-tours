@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cappadocia Vista Tours</title>
 <meta name="description" content="Cappadocia Vista Tours · Göreme. Hot-air balloon, ATV, jeep safari and horseback tours in Cappadocia. Türkçe · English · Español · 中文">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <meta name="google" content="notranslate">
 <link rel="canonical" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/">
 <link rel="alternate" hreflang="tr" href="https://ahmetbuyukkar3-creator.github.io/cappadocia-vista-tours/tr/">
@@ -53,7 +53,7 @@ footer{margin-top:34px;font-size:12px;letter-spacing:.14em;color:#7a7168}
   if (kayit && diller.indexOf(kayit) > -1 && location.hash !== '#sec') {
     // adresteki işaretler (?k=instagram, utm_...) dil sayfasına taşınır; VISTA varsa geldiği site de (?k=) eklenir
     var ek = location.search, r = document.referrer, a;
-    if (!ek && false && r) { a = document.createElement('a'); a.href = r; if (a.host !== location.host) ek = '?k=' + encodeURIComponent(a.hostname); }
+    if (!ek && true && r) { a = document.createElement('a'); a.href = r; if (a.host !== location.host) ek = '?k=' + encodeURIComponent(a.hostname); }
     location.replace(kayit + '/' + ek); return;
   }
   var tarayici = (navigator.language || '').slice(0,2).toLowerCase();
@@ -65,6 +65,6 @@ footer{margin-top:34px;font-size:12px;letter-spacing:.14em;color:#7a7168}
   }); });
 })();
 </script>
-
+<script src="js/vista.js?s=11281359" data-yerel="http://localhost:8798" defer></script>
 </body>
 </html>
